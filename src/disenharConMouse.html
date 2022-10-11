@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Paint | Kary</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+  </head>
+  <body>
+    <header>
+      <nav class="navbar bg-navbar">
+        <div class="container-fluid">
+          <span class="navbar-brand mb-0 h1">Paint | Kary</span>
+        </div>
+      </nav>
+    </header>
+    <div class="container py-3" align="center">
+      <!---Paint-->
+      <canvas width="600" height="400"></canvas>
+
+      <script>
+          var pantalla = document.querySelector('canvas');
+          var pincel = pantalla.getContext('2d');
+
+          pincel.fillStyle = '#979A9A';
+          pincel.fillRect(0, 0, 600, 400);
+          var puedoDibujar = false; //inicializa en false
+          //paleta de colores.
+          var xRed = 0;
+          var xGreen = 50;
+          var xBlue = 100;
+          var yCuad = 0;
+          var tamC = 50;
+          var colorActual = "#D3EEFF";
+
+          function dibujarCirculo(x, y, colorActual) { //diseñar o no.
+
+              if(puedoDibujar) {
+                  //var x = evento.pageX - pantalla.offsetLeft;
+                  //var y = evento.pageY - pantalla.offsetTop;
+                  pincel.fillStyle = colorActual;
+                  pincel.beginPath();
+                  pincel.arc(x, y, 5, 0, 2 * 3.14);
+                  pincel.fill();
+              }
+
+          }
+
+          function cuadrado(x, y, tam, color)
+          {
+            pincel.fillStyle = color;
+            pincel.fillRect(x, y, tam, tam);
+            pincel.fill();
+          }
+
+          function paleta()
+          {
+            cuadrado(xRed, yCuad, tamC, "#F0DEFD");
+            cuadrado(xGreen, yCuad, tamC, "#FEBCCB");
+            cuadrado(xBlue, yCuad, tamC, "#D3EEFF");
+          }
+
+          //onmousemove permite capturar el movimiento del mouse.
+          //pantalla.onmousemove = dibujarCirculo;
+
+          function habilitarDibujar()
+          {
+                puedoDibujar = true;
+          }
+
+          function deshabilitarDibujar()
+          {
+              puedoDibujar = false;
+          }
+
+          //onmousedown ejecuta un código cuando está presionado.
+        //  pantalla.onmousedown = habilitarDibujar;
+          //onmouseup -- cuando el botón de mouse es soltado
+          //pantalla.onmouseup = deshabilitarDibujar;
+
+         paleta();
+
+          //Función para delimitar el área
+          function Area(xCoordenada,yCoordenada){
+
+              if ((xCoordenada >= 0 && xCoordenada < (3*tamC+5)) &&
+                  (yCoordenada >=0 && yCoordenada < (tamC+5))) {
+
+                  return false;
+
+              } else{
+
+                  return true;
+
+              }
+
+          }
+
+          function Movimiento(evento){
+
+              var x = evento.pageX - pantalla.offsetLeft;
+              var y = evento.pageY - pantalla.offsetTop;
+
+              if (Area(x,y))
+              {
+                  dibujarCirculo(x,y,colorActual);
+              }
+
+          }
+
+          function seleccionarColor(evento) {
+
+              var x = evento.pageX - pantalla.offsetLeft;
+              var y = evento.pageY - pantalla.offsetTop;
+
+              //Cada condición altera el color de la variable colorActual
+
+              //Comenzamos por la condición del eje Y que es común para todas
+              if (y > yCuad && y < (yCuad + tamC))
+              {
+
+                  if(x > xRed && x < (xRed + tamC))
+                  {
+                      colorActual = "#F0DEFD";
+                      console.log(colorActual);
+
+                  } else if (x > xGreen && x < (xGreen + tamC)) {
+
+                      colorActual = "#FEBCCB";
+
+                  } else if(x > xBlue && x < (xBlue + tamC)) {
+
+                      colorActual = "#D3EEFF";
+
+                  }
+
+
+              }
+
+
+          }
+
+          pantalla.onmousemove = Movimiento;
+
+          pantalla.onmousedown = habilitarDibujar;
+
+          pantalla.onmouseup = deshabilitarDibujar;
+
+          //Paleta();
+
+          pantalla.onclick = seleccionarColor;
+
+      </script>
+      <!--Termina Paint--->
+    </div>
+    <script src="../js/bootstrap.min.js"></script>
+  </body>
+</html>
